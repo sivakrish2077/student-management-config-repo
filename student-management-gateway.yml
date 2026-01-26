@@ -5,39 +5,44 @@ spring:
   application:
     name: student-management-gateway
 
-  cloud:
-    gateway:
-      routes:
-        - id: course-service
-          uri: lb://course-service
-          predicates:
-            - Path=/courses/**
-
-        - id: student-service
-          uri: lb://student-service
-          predicates:
-            - Path=/students/**
-
-        - id: enrollment-service
-          uri: lb://enrollment-service
-          predicates:
-            - Path=/enrollments/**
-          filters:
-            - name: RequestRateLimiter
-              args:
-                redis-rate-limiter.replenishRate: 2
-                redis-rate-limiter.burstCapacity: 2
-                key-resolver: "#{@ipKeyResolver}"
-
-        - id: payment-service
-          uri: lb://payment-service
-          predicates:
-            - Path=/payments/**
+  config:
+    import: "optional:configserver:http://localhost:8888"
 
   data:
     redis:
       host: localhost
       port: 6379
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: course-service
+              uri: lb://course-service
+              predicates:
+                - Path=/courses/**
+
+            - id: student-service
+              uri: lb://student-service
+              predicates:
+                - Path=/students/**
+
+            - id: enrollment-service
+              uri: lb://enrollment-service
+              predicates:
+                - Path=/enrollments/**
+              filters:
+                - name: RequestRateLimiter
+                  args:
+                    redis-rate-limiter.replenishRate: 2
+                    redis-rate-limiter.burstCapacity: 2
+                    key-resolver: "#{@ipKeyResolver}"
+
+            - id: payment-service
+              uri: lb://payment-service
+              predicates:
+                - Path=/payments/**
 
 eureka:
   client:
@@ -50,5 +55,5 @@ management:
       exposure:
         include: health,info,gateway
   endpoint:
-    health:
-      show-details: always
+    gateway:
+      enabled: true
