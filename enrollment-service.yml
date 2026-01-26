@@ -1,5 +1,7 @@
 server:
   port: 8083
+  error:
+    include-message: always
 
 spring:
   kafka:
@@ -24,3 +26,14 @@ resilience4j:
         recordExceptions:
           - java.lang.Exception
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
