@@ -5,9 +5,6 @@ spring:
   application:
     name: student-management-gateway
 
-  config:
-    import: "optional:configserver:http://localhost:8888"
-
   data:
     redis:
       host: localhost
@@ -54,6 +51,3 @@ management:
     web:
       exposure:
         include: health,info,gateway
-  endpoint:
-    gateway:
-      enabled: true
