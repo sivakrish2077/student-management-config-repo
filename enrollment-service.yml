@@ -47,7 +47,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,circuitbreakers,circuitbreakerevents,env
+        include: health,info,circuitbreakers,circuitbreakerevents,env,prometheus
   endpoint:
     health:
       show-details: always
